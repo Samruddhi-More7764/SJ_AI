@@ -4,72 +4,7 @@ from __future__ import annotations
 
 from datetime import date
 
-# #region agent log
-import json
-import sys
-import time
-from importlib.util import find_spec
-from pathlib import Path as _DbgPath
-
-def _agent_dbg(hypothesis_id: str, message: str, data: dict) -> None:
-    payload = {
-        "sessionId": "be79e4",
-        "runId": "post-fix",
-        "hypothesisId": hypothesis_id,
-        "location": "app/agent.py:import",
-        "message": message,
-        "data": data,
-        "timestamp": int(time.time() * 1000),
-    }
-    with _DbgPath("/Users/samruddhimore/Desktop/t-to-sql/.cursor/debug-be79e4.log").open("a") as _f:
-        _f.write(json.dumps(payload) + "\n")
-
-_spec = find_spec("vanna")
-_agent_dbg(
-    "A",
-    "vanna find_spec before import",
-    {
-        "executable": sys.executable,
-        "version": sys.version.split()[0],
-        "path_head": sys.path[:8],
-        "spec_origin": None if _spec is None else getattr(_spec, "origin", None),
-        "spec_sublocs": None if _spec is None else list(_spec.submodule_search_locations or []),
-    },
-)
-try:
-    from vanna import Agent, AgentConfig
-    import vanna as _vanna_mod
-
-    _agent_dbg(
-        "C",
-        "vanna import succeeded",
-        {
-            "vanna_file": getattr(_vanna_mod, "__file__", None),
-            "has_agent": hasattr(_vanna_mod, "Agent"),
-        },
-    )
-except Exception as _exc:
-    try:
-        import vanna as _vanna_mod
-
-        _vfile = getattr(_vanna_mod, "__file__", None)
-        _vnames = [n for n in dir(_vanna_mod) if not n.startswith("_")][:40]
-    except Exception as _inner:
-        _vfile = None
-        _vnames = [type(_inner).__name__, str(_inner)[:200]]
-    _agent_dbg(
-        "A",
-        "vanna import failed",
-        {
-            "err_type": type(_exc).__name__,
-            "err": str(_exc)[:300],
-            "vanna_file": _vfile,
-            "vanna_names": _vnames,
-        },
-    )
-    raise
-# #endregion
-
+from vanna import Agent, AgentConfig
 from vanna.core.agent.config import DEFAULT_UI_FEATURES, UiFeature, UiFeatures
 from vanna.core.registry import ToolRegistry
 from vanna.core.system_prompt import DefaultSystemPromptBuilder
