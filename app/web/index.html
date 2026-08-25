@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StockJarvis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css?v=3">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="rail" id="rail" aria-label="Filings catalog">
+      <div class="brand">
+        <p class="brand-name">StockJarvis</p>
+        <p class="brand-tag">Ask the filings.</p>
+      </div>
+
+      <section class="stats" aria-label="Coverage">
+        <article class="stat">
+          <p class="stat-value" id="stat-companies">—</p>
+          <p class="stat-label">Companies</p>
+        </article>
+        <article class="stat">
+          <p class="stat-value" id="stat-period">—</p>
+          <p class="stat-label">Period coverage</p>
+        </article>
+        <article class="stat">
+          <p class="stat-value" id="stat-filings">—</p>
+          <p class="stat-label">Processed filings</p>
+        </article>
+        <article class="stat">
+          <p class="stat-value" id="stat-tags">—</p>
+          <p class="stat-label">Tags</p>
+        </article>
+      </section>
+
+      <section class="finder">
+        <label for="company-search">Companies</label>
+        <input id="company-search" type="search" placeholder="Name or ticker" autocomplete="off">
+        <div class="scroller" id="company-list" role="listbox" aria-label="Companies in the database"></div>
+      </section>
+
+      <section class="finder">
+        <label for="tag-search">Tags</label>
+        <input id="tag-search" type="search" placeholder="Tag, meaning, or metric" autocomplete="off">
+        <div class="scroller" id="tag-list" role="listbox" aria-label="Tags in the database"></div>
+      </section>
+    </aside>
+
+    <div class="scrim" id="scrim" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="menu" id="menu-btn" type="button" aria-controls="rail" aria-expanded="false" aria-label="Open catalog">
+          Catalog
+        </button>
+        <p class="topbar-title">StockJarvis</p>
+      </header>
+
+      <div class="thread" id="thread" aria-live="polite">
+        <div class="empty" id="empty-state">
+          <p>Ask a question about figures in these filings. Click a company or tag to drop it into the box.</p>
+        </div>
+      </div>
+
+      <form class="composer" id="composer">
+        <label class="sr-only" for="prompt">Message</label>
+        <textarea id="prompt" rows="1" placeholder="Ask about a filing…" required></textarea>
+        <button type="submit" id="send">Send</button>
+      </form>
+    </main>
+  </div>
+  <script src="/static/app.js?v=3"></script>
+</body>
+</html>
